@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Нейра</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; }
+  body {
+    height: 100vh; height: 100dvh;
+    display: flex; flex-direction: column;
+    background: #121212; color: #fff;
+    overflow: hidden;
+    user-select: none;
+  }
+
+  /* Шапка */
+  .header {
+    padding: 20px 20px 10px;
+    font-size: 24px; font-weight: 700;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .header span { font-size: 28px; }
+
+  /* Поисковая строка */
+  .search-box {
+    padding: 10px 20px;
+    display: flex; gap: 10px;
+  }
+  .search-box input {
+    flex: 1; height: 50px;
+    background: #2a2a2a; border: 1px solid #333;
+    border-radius: 25px; padding: 0 20px;
+    color: #fff; font-size: 16px; outline: none;
+    transition: border-color 0.2s;
+  }
+  .search-box input:focus { border-color: #fbbc04; }
+  
+  .search-box button {
+    width: 50px; height: 50px;
+    border-radius: 25px; border: none;
+    background: #fbbc04; color: #000;
+    font-size: 20px; font-weight: bold;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+  }
+
+  /* Быстрые ссылки (Закладки) */
+  .shortcuts {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+    padding: 30px 20px;
+  }
+  .shortcut {
+    display: flex; flex-direction: column;
+    align-items: center; gap: 8px;
+    text-decoration: none; color: #aaa;
+    font-size: 12px;
+  }
+  .shortcut .icon {
+    width: 60px; height: 60px;
+    background: #2a2a2a; border-radius: 16px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 28px;
+    transition: background 0.2s;
+  }
+  .shortcut:active .icon { background: #444; }
+  .shortcut span { text-align: center; }
+
+  /* Кнопка Алисы внизу */
+  .alice-btn {
+    margin: auto 20px 40px;
+    height: 60px;
+    background: linear-gradient(135deg, #5c4d7d, #3b2c5e);
+    border-radius: 30px;
+    display: flex; align-items: center; justify-content: center;
+    gap: 10px; font-size: 16px; font-weight: 600;
+    border: none; color: #fff;
+    text-decoration: none;
+  }
+  .alice-btn:active { opacity: 0.8; }
+</style>
+</head>
+<body>
+
+  <div class="header">
+    <span>🧠</span> Нейра
+  </div>
+
+  <div class="search-box">
+    <input id="urlInput" type="text" placeholder="Поиск или адрес сайта" autocomplete="off" />
+    <button id="goBtn">➔</button>
+  </div>
+
+  <div class="shortcuts">
+    <a href="https://ya.ru" target="_blank" class="shortcut">
+      <div class="icon">Я</div>
+      <span>Яндекс</span>
+    </a>
+    <a href="https://www.google.com" target="_blank" class="shortcut">
+      <div class="icon">G</div>
+      <span>Google</span>
+    </a>
+    <a href="https://dzen.ru" target="_blank" class="shortcut">
+      <div class="icon">Д</div>
+      <span>Дзен</span>
+    </a>
+    <a href="https://vk.com" target="_blank" class="shortcut">
+      <div class="icon">VK</div>
+      <span>ВКонтакте</span>
+    </a>
+    <a href="https://youtube.com" target="_blank" class="shortcut">
+      <div class="icon">YT</div>
+      <span>YouTube</span>
+    </a>
+    <a href="https://t.me" target="_blank" class="shortcut">
+      <div class="icon">TG</div>
+      <span>Telegram</span>
+    </a>
+    <a href="https://ru.wikipedia.org" target="_blank" class="shortcut">
+      <div class="icon">W</div>
+      <span>Вики</span>
+    </a>
+    <a href="https://github.com" target="_blank" class="shortcut">
+      <div class="icon">GH</div>
+      <span>GitHub</span>
+    </a>
+  </div>
+
+  <a href="https://ya.ru/alice" target="_blank" class="alice-btn">
+    <span>🤖</span> Спросить Алису AI
+  </a>
+
+<script>
+  const input = document.getElementById('urlInput');
+  const goBtn = document.getElementById('goBtn');
+
+  function go() {
+    let text = input.value.trim();
+    if (!text) return;
+
+    // Проверяем, похоже ли это на сайт (есть точка, нет пробелов)
+    const isUrl = text.includes('.') && !text.includes(' ');
+
+    if (isUrl) {
+      // Если это сайт — добавляем https:// если нужно и открываем
+      if (!text.startsWith('http')) text = 'https://' + text;
+      window.open(text, '_blank');
+    } else {
+      // Если это запрос — ищем в Яндексе
+      window.open('https://yandex.ru/search/?text=' + encodeURIComponent(text), '_blank');
+    }
+    
+    // Очищаем строку после перехода
+    input.value = '';
+  }
+
+  // Обработка нажатия Enter
+  input.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      go();
+    }
+  });
+
+  // Обработка нажатия кнопки
+  goBtn.addEventListener('click', go);
+</script>
+</body>
+</html>
